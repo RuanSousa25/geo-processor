@@ -53,22 +53,24 @@ export class KMLProcessor {
           if (nameLower.includes("exp")) polygonTypeArr.push("Exp");
           if (nameLower.includes("rap") || nameLower.includes("ráp"))
             polygonTypeArr.push("Rap");
-          let polygonType = polygonTypeArr.join("_");
 
           // Extrai o número da filial do nome do arquivo
           const branchNumber = this.extractBranchNumber(fileName);
-          const formattedName = this.formatPolygonName(
-            originalName,
-            branchNumber,
-            polygonType
-          );
 
-          polygons.push({
-            id: `polygon-${i}-${j}`,
-            formattedName,
-            coordinates,
-            originalName,
-          });
+          for (let polygonType of polygonTypeArr) {
+            const formattedName = this.formatPolygonName(
+              originalName,
+              branchNumber,
+              polygonType
+            );
+
+            polygons.push({
+              id: `polygon-${i}-${j}`,
+              formattedName,
+              coordinates,
+              originalName,
+            });
+          }
         }
       }
     }

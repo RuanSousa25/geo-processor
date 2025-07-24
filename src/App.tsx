@@ -71,23 +71,24 @@ export default function App() {
           if (nameLower.includes("rap") || nameLower.includes("ráp"))
             polygonTypeArr.push("Rap");
         }
-        const polygonType = polygonTypeArr.join("_");
-        const originalName =
-          feature.properties?.name ||
-          feature.properties?.Name ||
-          `Polígono ${index + 1}`;
-        const formattedName = formatPolygonName(
-          originalName,
-          branchNumber,
-          polygonType
-        );
+        for (let polygonType of polygonTypeArr) {
+          const originalName =
+            feature.properties?.name ||
+            feature.properties?.Name ||
+            `Polígono ${index + 1}`;
+          const formattedName = formatPolygonName(
+            originalName,
+            branchNumber,
+            polygonType
+          );
 
-        polygons.push({
-          id: `polygon-${index}`,
-          formattedName,
-          coordinates,
-          originalName,
-        });
+          polygons.push({
+            id: `polygon-${index}`,
+            formattedName,
+            coordinates,
+            originalName,
+          });
+        }
       }
     });
 
