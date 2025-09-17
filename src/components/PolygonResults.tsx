@@ -1,12 +1,14 @@
-import { Copy, MapPin, Navigation } from "lucide-react";
+import { Copy, MapPin, Navigation, Radius } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { toast } from "sonner";
 import { ProcessedPolygon } from "./types";
+import { calcularRaioEmKm } from "../utils/polygonCalc";
 
 interface PolygonResultsProps {
   polygons: ProcessedPolygon[];
   fileName: string;
+  radius: number;
 }
 
 export function PolygonResults({ polygons, fileName }: PolygonResultsProps) {
@@ -95,6 +97,12 @@ export function PolygonResults({ polygons, fileName }: PolygonResultsProps) {
                     <span className="font-mono bg-gray-100 px-2 py-1 rounded text-sm">
                       {polygon.formattedName}
                     </span>
+                    <div className="flex items-center space-x-1">
+                      <Radius className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-semibold text-primary">
+                        {calcularRaioEmKm(polygon.coordinates).toFixed(2)} km
+                      </span>
+                    </div>
                   </div>
                   <Button
                     variant="outline"
