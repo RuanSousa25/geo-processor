@@ -1,3 +1,4 @@
+import { calcularRaioEmKm } from "../utils/polygonCalc";
 import { ProcessedPolygon } from "./types";
 
 export class KMLProcessor {
@@ -58,10 +59,12 @@ export class KMLProcessor {
           const branchNumber = this.extractBranchNumber(fileName);
 
           for (let polygonType of polygonTypeArr) {
+            let kmPol = calcularRaioEmKm(coordinates);
             const formattedName = this.formatPolygonName(
               originalName,
               branchNumber,
-              polygonType
+              polygonType,
+              kmPol
             );
 
             polygons.push({
@@ -69,6 +72,7 @@ export class KMLProcessor {
               formattedName,
               coordinates,
               originalName,
+              km: kmPol,
             });
           }
         }
@@ -113,7 +117,8 @@ export class KMLProcessor {
   private static formatPolygonName(
     originalName: string,
     branchNumber: string,
-    polygonType: string
+    polygonType: string,
+    km: number
   ): string {
     const currentDate = new Date();
     const day = currentDate.getDate().toString().padStart(2, "0");
@@ -121,6 +126,6 @@ export class KMLProcessor {
     const year = currentDate.getFullYear();
     const dateStr = `${day}${month}${year}`;
 
-    return `Pol_${polygonType}_${branchNumber}_${dateStr}`;
+    return `Pol_${polygonType}_${branchNumber}_${dateStr}_${km.toFixed(0)}KM`;
   }
 }

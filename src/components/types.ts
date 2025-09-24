@@ -3,6 +3,7 @@ export interface ProcessedPolygon {
   formattedName: string;
   coordinates: number[][];
   originalName?: string;
+  km: number;
 }
 
 export interface FileProcessorResult {

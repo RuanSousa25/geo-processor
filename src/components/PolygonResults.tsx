@@ -8,7 +8,6 @@ import { calcularRaioEmKm } from "../utils/polygonCalc";
 interface PolygonResultsProps {
   polygons: ProcessedPolygon[];
   fileName: string;
-  radius: number;
 }
 
 export function PolygonResults({ polygons, fileName }: PolygonResultsProps) {
@@ -100,7 +99,7 @@ export function PolygonResults({ polygons, fileName }: PolygonResultsProps) {
                     <div className="flex items-center space-x-1">
                       <Radius className="w-4 h-4 text-primary" />
                       <span className="text-sm font-semibold text-primary">
-                        {calcularRaioEmKm(polygon.coordinates).toFixed(2)} km
+                        {polygon.km?.toFixed(2) || ""} km
                       </span>
                     </div>
                   </div>

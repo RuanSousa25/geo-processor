@@ -8,6 +8,7 @@ import { Button } from "./components/ui/button";
 import { Toaster } from "./components/ui/sonner";
 import { ProcessedPolygon } from "./components/types";
 import JSZip from "jszip";
+import { calcularRaioEmKm } from "./utils/polygonCalc";
 
 export default function App() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -27,7 +28,8 @@ export default function App() {
   const formatPolygonName = (
     originalName: string,
     branchNumber: string,
-    polygonType: string
+    polygonType: string,
+    km: number
   ): string => {
     const currentDate = new Date();
     const day = currentDate.getDate().toString().padStart(2, "0");
@@ -35,7 +37,7 @@ export default function App() {
     const year = currentDate.getFullYear();
     const dateStr = `${day}${month}${year}`;
 
-    return `Pol_${polygonType}_${branchNumber}_${dateStr}`;
+    return `Pol_${polygonType}_${branchNumber}_${dateStr}_${km.toFixed(0)}KM`;
   };
 
   const processGeoJSON = async (file: File): Promise<ProcessedPolygon[]> => {
@@ -72,6 +74,7 @@ export default function App() {
             polygonTypeArr.push("Rap");
         }
         for (let polygonType of polygonTypeArr) {
+          let kmPol = calcularRaioEmKm(coordinates);
           const originalName =
             feature.properties?.name ||
             feature.properties?.Name ||
@@ -79,7 +82,8 @@ export default function App() {
           const formattedName = formatPolygonName(
             originalName,
             branchNumber,
-            polygonType
+            polygonType,
+            kmPol
           );
 
           polygons.push({
@@ -87,9 +91,11 @@ export default function App() {
             formattedName,
             coordinates,
             originalName,
+            km: kmPol,
           });
         }
       }
+      console.log(polygons);
     });
 
     return polygons;
